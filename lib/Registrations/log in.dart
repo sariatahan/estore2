@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:estore2/Registrations/sign_up.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-
-
-
 
 class login extends StatefulWidget {
   static const String id = 'Login';
@@ -24,7 +22,7 @@ class _loginState extends State<login> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xFFE6E6E6),
-      body:SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Container(
           height: size.height,
           width: size.width,
@@ -146,7 +144,7 @@ class _loginState extends State<login> {
                               });
                             },
                             materialTapTargetSize:
-                            MaterialTapTargetSize.shrinkWrap,
+                                MaterialTapTargetSize.shrinkWrap,
                           ),
                         ),
                       ],
@@ -168,7 +166,9 @@ class _loginState extends State<login> {
                             child: Container(
                               padding: EdgeInsets.only(right: 1),
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(context, SignupPage.id);
+                                },
                                 child: Text(
                                   'قم بإنشاء حساب الآن',
                                   style: GoogleFonts.almarai(
@@ -201,7 +201,7 @@ class _loginState extends State<login> {
                           '________________',
                           style: TextStyle(
                             color: Color(0xFF008080),
-                            fontSize:15.0,
+                            fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -266,7 +266,6 @@ class _loginState extends State<login> {
                   ),
                 ),
               ),
-
             ],
           ),
         ),
