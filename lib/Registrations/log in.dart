@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:estore2/Registrations/sign_up.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:estore2/Screens/homescreen.dart';
 
 class login extends StatefulWidget {
   static const String id = 'Login';
@@ -24,7 +24,7 @@ class _loginState extends State<login> {
       backgroundColor: Color(0xFFE6E6E6),
       body: SingleChildScrollView(
         child: Container(
-          height: size.height,
+          height: null,
           width: size.width,
           padding: EdgeInsets.symmetric(horizontal: 30),
           child: Column(
@@ -89,7 +89,9 @@ class _loginState extends State<login> {
                   borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, HomeScreen.id);
+                  },
                   child: Text(
                     'تسجيل دخول',
                     style: TextStyle(
@@ -198,7 +200,7 @@ class _loginState extends State<login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '________________',
+                          '______________',
                           style: TextStyle(
                             color: Color(0xFF008080),
                             fontSize: 15.0,

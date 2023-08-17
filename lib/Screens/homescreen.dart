@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class HomeScreen extends StatelessWidget {
   static const String id = 'HomeScreen';
 
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Search',
+                    hintText: 'البحث',
                     border: InputBorder.none,
                   ),
                 ),
@@ -78,6 +78,39 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildIconCard(icon: Icons.laptop, title: 'لابتوبات'),
+                      _buildIconCard(
+                          icon: Icons.phone_android, title: 'موبايلات'),
+                      _buildIconCard(
+                          icon: Icons.tablet_android, title: '     تابات '),
+                      _buildIconCard(icon: Icons.watch, title: 'ساعات ذكية'),
+                      _buildIconCard(icon: Icons.headphones, title: 'سماعات'),
+                      _buildIconCard(icon: Icons.diamond, title: 'اكسسوارات'),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 160),
+                  child: Text(
+                    'الأكثر مبيع',
+                    style: GoogleFonts.almarai(
+                      fontSize: 33.0,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF515C6F),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ),
@@ -104,6 +137,38 @@ class HomeScreen extends StatelessWidget {
             label: 'Menu',
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildIconCard({
+    required IconData icon,
+    required String title,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 50,
+              color: const Color(0xFF008080),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              style: GoogleFonts.almarai(
+                fontSize: 15.0,
+                color: const Color(0xFF515C6F),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
