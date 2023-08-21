@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:estore2/Shopping Brain/ItemsManagement.dart';
 import 'package:estore2/Shopping Brain/ItemsBank.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String id = 'HomeScreen';
@@ -110,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 25,
                 ),
                 Flexible(
                   child: ListView.builder(
@@ -145,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 160),
@@ -158,11 +161,17 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 25,
+                ),
                 Flexible(
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: recommendedItems.length, // Update the itemCount
+                    itemCount: recommendedItems.length,
                     itemBuilder: (BuildContext context, int index) {
+                      // Access the item using the index
+                      var item = recommendedItems[index];
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Container(
@@ -174,15 +183,14 @@ class HomeScreen extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image(
-                                    image: AssetImage(recommendedItems[index]
-                                        .assetImage), // Update the image source
+                                    image: AssetImage(item.assetImage),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              Text(recommendedItems[index].name),
-                              Text(recommendedItems[index].price),
+                              Text(item.name),
+                              Text(item.price),
                             ],
                           ),
                         ),

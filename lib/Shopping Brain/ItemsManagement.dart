@@ -44,6 +44,9 @@ enum ItemState {
   BestSeller,
 }
 void initializeItems() {
+  recommendedItems.clear(); // Clear the recommendedItems list before populating it
+  bestSellerItems.clear(); // Clear the bestSellerItems list before populating it
+
   for (var item in items) {
     if (item.itemState == ItemState.Recommended) {
       final recommendedItem = RecommendedItems(
