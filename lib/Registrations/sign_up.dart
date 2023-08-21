@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:estore2/Registrations/log in.dart';
 
 class SignupPage extends StatelessWidget {
   static const String id = 'signup_page';
@@ -46,7 +47,7 @@ class SignupPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                child:  Column(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 5.0),
@@ -54,9 +55,7 @@ class SignupPage extends StatelessWidget {
                       controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'EMAIL',
-                        prefixIcon: Icon(
-                          Icons.email_outlined
-                        ),
+                        prefixIcon: Icon(Icons.email_outlined),
                       ),
                     ),
                     SizedBox(height: 5.0),
@@ -76,9 +75,7 @@ class SignupPage extends StatelessWidget {
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'PASSWORD',
-                        prefixIcon: Icon(
-                          Icons.lock_open_sharp
-                        ),
+                        prefixIcon: Icon(Icons.lock_open_sharp),
                       ),
                     ),
                   ],
@@ -99,7 +96,6 @@ class SignupPage extends StatelessWidget {
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0,
-
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
@@ -124,8 +120,10 @@ class SignupPage extends StatelessWidget {
                               padding: EdgeInsets.only(right: 1),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, SignupPage.id);
-
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => login()));
                                 },
                                 child: Text(
                                   'سجل دخول الان',

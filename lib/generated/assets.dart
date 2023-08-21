@@ -2,6 +2,13 @@
 class Assets {
   Assets._();
 
-  static const String assetsGoogle = 'assets/google.png';
+  static const String estore2ImagesGoogle = 'images/google.png';
+  static const String imagesAs = 'images/as.png';
+  static const String imagesGoogle = 'images/google.png';
+  static const String imagesImages = 'images/images.png';
+  static const String imagesSaria = 'images/saria.png';
+  static const String laptops216212xtp = 'images/Laptops/21621_2xtp.jpg';
+  static const String phonesASSETMMS101835605 = 'images/Phones/ASSET_MMS_101835605.webp';
+  static const String phonesIphone14ProFinishSelect20220967inchSpaceblack = 'images/Phones/iphone-14-pro-finish-select-202209-6-7inch-spaceblack.jpeg';
 
 }

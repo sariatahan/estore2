@@ -83,7 +83,7 @@ class _loginState extends State<login> {
               ),
               Container(
                 width: size.width * 0.8,
-                height: 50,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Color(0xFF008080),
                   borderRadius: BorderRadius.circular(25.0),
@@ -108,7 +108,6 @@ class _loginState extends State<login> {
                   ),
                 ),
               ),
-              SizedBox(height: 1),
               Container(
                 width: size.width * 0.8,
                 child: Row(
@@ -154,13 +153,12 @@ class _loginState extends State<login> {
                   ],
                 ),
               ),
-              SizedBox(height: 40),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Column(
                   children: [
                     Container(
-                      height: 130,
+                      height: 70,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -195,7 +193,6 @@ class _loginState extends State<login> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 1),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -207,7 +204,6 @@ class _loginState extends State<login> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 20),
                         Text(
                           'أو',
                           style: TextStyle(
@@ -230,7 +226,7 @@ class _loginState extends State<login> {
                   ],
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 20),
               Container(
                 width: size.width * 0.8,
                 height: 50,

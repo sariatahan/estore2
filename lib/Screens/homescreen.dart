@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:estore2/Shopping Brain/ItemsManagement.dart';
+import 'package:estore2/Shopping Brain/ItemsBank.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String id = 'HomeScreen';
-
-  const HomeScreen({Key? key});
-
   @override
   Widget build(BuildContext context) {
+    initializeItems();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF008080),
@@ -109,7 +110,85 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
+                ),
+                Flexible(
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: bestSellerItems.length, // Update the itemCount
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Container(
+                          width: 200,
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 1.3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image(
+                                    image: AssetImage(bestSellerItems[index]
+                                        .assetImage), // Update the image source
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(bestSellerItems[index].name),
+                              Text(bestSellerItems[index].price),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 160),
+                  child: Text(
+                    'الموصى به',
+                    style: GoogleFonts.almarai(
+                      fontSize: 33.0,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF515C6F),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recommendedItems.length, // Update the itemCount
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Container(
+                          width: 200,
+                          child: Column(
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 1.3,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: Image(
+                                    image: AssetImage(recommendedItems[index]
+                                        .assetImage), // Update the image source
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(recommendedItems[index].name),
+                              Text(recommendedItems[index].price),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
