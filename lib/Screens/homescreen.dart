@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:estore2/Shopping Brain/ItemsManagement.dart';
 import 'package:estore2/Shopping Brain/ItemsBank.dart';
+import 'package:estore2/Shopping Brain/ItemsManagement.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   static const String id = 'HomeScreen';
   @override
   Widget build(BuildContext context) {
-    initializeItems();
+    initializeItems(items, recommendedItems, bestSellerItems);
 
     return Scaffold(
       appBar: AppBar(
@@ -120,6 +120,8 @@ class HomeScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: bestSellerItems.length, // Update the itemCount
                     itemBuilder: (BuildContext context, int index) {
+                      var item = bestSellerItems[index]; // Access the item using the index
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Container(
@@ -130,16 +132,15 @@ class HomeScreen extends StatelessWidget {
                                 aspectRatio: 1.3,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: Image(
-                                    image: AssetImage(bestSellerItems[index]
-                                        .assetImage), // Update the image source
+                                  child: Image.network(
+                                    item.image, // Update the image source
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              Text(bestSellerItems[index].name),
-                              Text(bestSellerItems[index].price),
+                              Text(item.name), // Update the name
+                              Text(item.price), // Update the price
                             ],
                           ),
                         ),
@@ -167,10 +168,9 @@ class HomeScreen extends StatelessWidget {
                 Flexible(
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: recommendedItems.length,
+                    itemCount: recommendedItems.length, // Update the itemCount
                     itemBuilder: (BuildContext context, int index) {
-                      // Access the item using the index
-                      var item = recommendedItems[index];
+                      var item = recommendedItems[index]; // Access the item using the index
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -182,15 +182,15 @@ class HomeScreen extends StatelessWidget {
                                 aspectRatio: 1.3,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  child: Image(
-                                    image: AssetImage(item.assetImage),
+                                  child: Image.network(
+                                    item.image, // Update the image source
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              Text(item.name),
-                              Text(item.price),
+                              Text(item.name), // Update the name
+                              Text(item.price), // Update the price
                             ],
                           ),
                         ),
