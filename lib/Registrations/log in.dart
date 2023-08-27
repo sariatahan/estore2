@@ -1,21 +1,112 @@
+import 'package:estore2/Registrations/password%20page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:estore2/Registrations/sign_up.dart';
 import 'package:estore2/Screens/homescreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class login extends StatefulWidget {
+class Login extends StatefulWidget {
   static const String id = 'Login';
 
   @override
-  State<login> createState() => _loginState();
+  State<Login> createState() => _LoginState();
 }
 
-class _loginState extends State<login> {
+class _LoginState extends State<Login> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool rememberMe = false;
+  bool isLoading = false;
 
   String buttonText = "قم بإنشاء حساب الآن";
+
+  Future<void> _loginUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      // User is successfully logged in, navigate to HomeScreen
+      Navigator.pushNamed(context, HomeScreen.id);
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+
+      if (e.code == 'user-not-found') {
+        errorMessage = 'لم يتم العثور على مستخدم بهذا البريد الإلكتروني.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'كلمة المرور غير صحيحة.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'عنوان البريد الإلكتروني غير صحيح.';
+      } else {
+        errorMessage = 'حدث خطأ أثناء تسجيل الدخول. الرجاء المحاولة مرة أخرى.';
+      }
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('فشل تسجيل الدخول'),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+    setState(() {
+      isLoading = false;
+    });
+
+  }
+  void _handleGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser!.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // User is successfully logged in, navigate to HomeScreen
+      Navigator.pushNamed(context, HomeScreen.id);
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('فشل تسجيل الدخول'),
+            content: Text(
+                'حدث خطأ أثناء تسجيل الدخول باستخدام حساب Google. الرجاء المحاولة مرة أخرى.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +180,20 @@ class _loginState extends State<login> {
                   borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, HomeScreen.id);
-                  },
-                  child: Text(
-                    'تسجيل دخول',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
+                  onPressed: isLoading ? null : _loginUser,
+                  child: isLoading
+                      ? SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: 25.0,
+                        )
+                      : Text(
+                          'تسجيل دخول',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF008080),
                     shape: RoundedRectangleBorder(
@@ -114,7 +208,9 @@ class _loginState extends State<login> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, PasswordPage.id);
+                      },
                       child: Text(
                         'هل نسيت كلمة السر؟',
                         style: GoogleFonts.almarai(
@@ -235,7 +331,7 @@ class _loginState extends State<login> {
                   borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _handleGoogleSignIn,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -262,8 +358,7 @@ class _loginState extends State<login> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                   ),
-                ),
-              ),
+                ),),
             ],
           ),
         ),

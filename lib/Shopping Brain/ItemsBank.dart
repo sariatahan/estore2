@@ -3,10 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final List<ShoppingItems> items = [];
 
-Future<void> fetchItemsFromFirestore() async {
+Future<void> fetchItemsFromFirestore(List<ShoppingItems> items) async {
   try {
     final snapshot = await FirebaseFirestore.instance.collection('Product').get();
-    items.clear(); // Clear the items list before populating it
 
     for (var doc in snapshot.docs) {
       final data = doc.data();
@@ -20,8 +19,6 @@ Future<void> fetchItemsFromFirestore() async {
       );
       items.add(item);
     }
-
-    initializeItems(items, recommendedItems, bestSellerItems);
   } catch (e) {
     print('Error fetching items from Firestore: $e');
   }

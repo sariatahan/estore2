@@ -1,5 +1,6 @@
   import 'package:estore2/Shopping Brain/ItemsBank.dart';
   import 'package:cloud_firestore/cloud_firestore.dart';
+  import 'package:flutter/material.dart';
 
   class ShoppingItems {
     final String name;
@@ -18,7 +19,6 @@
       this.description = '',
     });
   }
-
   class RecommendedItems {
     final String name;
     final String price;

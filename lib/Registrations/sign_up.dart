@@ -1,12 +1,118 @@
+import 'package:estore2/Screens/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore2/Registrations/log in.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   static const String id = 'signup_page';
 
+  @override
+  _SignupPageState createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _showSpinner = false;
+
+  Future<void> signUp() async {
+    String email = _emailController.text;
+    String username = _usernameController.text;
+    String password = _passwordController.text;
+
+    setState(() {
+      _showSpinner = true;
+    });
+
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Registration successful, you can navigate to the desired screen
+      // Example:
+      Navigator.pushNamed(context, Login.id);
+    } catch (e) {
+      if (e is FirebaseAuthException) {
+        String errorMessage;
+
+        if (e.code == 'email-already-in-use') {
+          errorMessage = 'هذا البريد الإلكتروني مستخدم بالفعل.';
+        } else if (e.code == 'invalid-email') {
+          errorMessage = 'عنوان البريد الإلكتروني غير صحيح.';
+        } else {
+          errorMessage = 'حدث خطأ أثناء التسجيل. الرجاء المحاولة مرة أخرى.';
+        }
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("فشل تسجيل الدخول"),
+              content: Text(errorMessage),
+              actions: [
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+    Future<void> _signInWithGoogle() async {
+      try {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser!.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+
+        // User is successfully logged in, navigate to HomeScreen
+        Navigator.pushNamed(context, HomeScreen.id);
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('فشل تسجيل الدخول'),
+              content: Text(
+                  'حدث خطأ أثناء تسجيل الدخول باستخدام حساب Google. الرجاء المحاولة مرة أخرى.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+
+      setState(() {
+        _showSpinner = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +166,7 @@ class SignupPage extends StatelessWidget {
                     ),
                     SizedBox(height: 5.0),
                     TextField(
-                      controller: _passwordController,
-                      obscureText: true,
+                      controller: _usernameController,
                       decoration: InputDecoration(
                         labelText: 'USERNAME',
                         prefixIcon: Icon(
@@ -89,15 +194,20 @@ class SignupPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'انشاء الحساب ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
+                  onPressed: signUp,
+                  child: _showSpinner
+                      ? SpinKitFadingCircle(
+                          color: Colors.white,
+                          size: 25.0,
+                        )
+                      : Text(
+                          'انشاء الحساب ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                          ),
+                        ),
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF008080),
                     shape: RoundedRectangleBorder(
@@ -121,9 +231,10 @@ class SignupPage extends StatelessWidget {
                               child: InkWell(
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => login()));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Login()),
+                                  );
                                 },
                                 child: Text(
                                   'سجل دخول الان',
